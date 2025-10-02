@@ -6,7 +6,7 @@ const { auth, requiresAuth } = require("express-openid-connect");
 const cons = require("consolidate");
 const path = require("path");
 
-let app = express();
+const app = express();
 
 // Globals
 const PORT = process.env.PORT || "3000";
@@ -25,13 +25,12 @@ const config = {
 // MVC View Setup
 app.engine("html", cons.swig);
 app.set("views", path.join(__dirname, "views"));
-app.set("models", path.join(__dirname, "models"));
 app.set("view engine", "html");
 
 // App middleware
-app.use("/static", express.static("static"));
+app.use("/static", express.static(path.join(__dirname, "static")));
 
-// auth router attaches /login, /logout, and /callback routes to the baseURL
+// Auth0 middleware
 app.use(auth(config));
 
 // Middleware de debug
@@ -41,12 +40,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// App routes
+// Rutas
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-// Ruta de debug
 app.get("/test-auth", (req, res) => {
   res.json({
     isAuthenticated: req.oidc.isAuthenticated(),
@@ -59,7 +57,6 @@ app.get("/test-auth", (req, res) => {
   });
 });
 
-// Ruta protegida: dashboard
 app.get("/dashboard", requiresAuth(), (req, res) => {
   console.log("Usuario autenticado:");
   console.log(req.oidc.user);
@@ -74,7 +71,7 @@ app.get("/dashboard", requiresAuth(), (req, res) => {
   res.render("dashboard", { user: userInfo });
 });
 
-// Ruta de fallback para errores 404
+// Fallback 404
 app.use((req, res) => {
   res.status(404).send("Página no encontrada");
 });
