@@ -17,7 +17,7 @@ const config = {
   authRequired: false,
   auth0Logout: true,
   secret: SECRET,
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://lab-6-seguridad-informatica.onrender.com',
   clientID: 'BRgcL9Bs8mkR0intsYqlzPF0hOBvEsoD',
   issuerBaseURL: 'https://dev-7z6znp0tgu5qdhum.us.auth0.com',
   clientSecret: 'GGhxBkcyxFaeDIjTrxpjTFb-9rZkE4O7wFiBPPhdtwSCLUbcM2_AnT6pJ0bs-RcW'
